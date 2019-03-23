@@ -1,0 +1,303 @@
+diff --git a/Makefile b/Makefile
+index 1799192d9..ae22695b7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -16,6 +16,9 @@
+ #
+ ##
+ 
++# Enable parallel compilation within each pacakge
++.NOTPARALLEL:
++
+ BUILD_HOME:=$(shell pwd)
+ 
+ ifndef PACKAGES
+diff --git a/extern/asyncresolv/Makefile b/extern/asyncresolv/Makefile
+index 53df48e5e..963e16031 100755
+--- a/extern/asyncresolv/Makefile
++++ b/extern/asyncresolv/Makefile
+@@ -75,13 +75,13 @@ asyncresolv-0.0.4/configure:
+ all: asyncresolv-0.0.4/configure
+ 	cd ./asyncresolv-0.0.4; \
+ 	./configure --prefix $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make install
++	$(MAKE) install
+ 
+ _installall: install
+ install: asyncresolv-0.0.4/configure
+ 	cd ./asyncresolv-0.0.4; \
+ 	./configure --prefix $(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make install
++	$(MAKE) install
+ 
+ _cleanall: clean
+ clean:
+diff --git a/extern/cgicc/Makefile b/extern/cgicc/Makefile
+index 2da71b7c8..7a446e42a 100755
+--- a/extern/cgicc/Makefile
++++ b/extern/cgicc/Makefile
+@@ -74,14 +74,14 @@ cgicc-3.2.16/configure:
+ all: cgicc-3.2.16/configure
+ 	cd ./cgicc-3.2.16; \
+ 	./configure --prefix $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make all ; make install
++	$(MAKE) all ; $(MAKE) install
+ 
+ _installall: install
+ 
+ install:
+ 	cd cgicc-3.2.16; \
+ 	./configure --prefix $(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ 
+ _cleanall: clean
+ clean:
+diff --git a/extern/cppunit/Makefile b/extern/cppunit/Makefile
+index 6fc1e2d51..1a2ada257 100755
+--- a/extern/cppunit/Makefile
++++ b/extern/cppunit/Makefile
+@@ -61,13 +61,13 @@ cppunit-1.10.2/configure:
+ all: cppunit-1.10.2/configure
+ 	cd ./cppunit-1.10.2; \
+ 	./configure --prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM) --exec-prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ _installall: install
+ 	
+ install: cppunit-1.10.2/configure
+ 	cd cppunit-1.10.2; \
+ 	./configure --prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM) --exec-prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ _cleanall: clean
+ 	
+ clean:
+diff --git a/extern/gmp/Makefile b/extern/gmp/Makefile
+index b0a3a1191..e616b39b2 100755
+--- a/extern/gmp/Makefile
++++ b/extern/gmp/Makefile
+@@ -45,7 +45,7 @@ _buildall:
+ 	tar -zxf gmp-4.1.4.tar.gz; \
+ 	cd ./gmp-4.1.4; \
+ 	./configure --prefix $(XDAQ_ROOT)/daq/extern/gmp/$(XDAQ_OS)$(XDAQ_PLATFORM); \
+-	make install; 
++	$(MAKE) install; 
+ 
+ _cleanall:
+ 	-rm -rf ./$(XDAQ_OS)$(XDAQ_PLATFORM);
+diff --git a/extern/jansson/Makefile b/extern/jansson/Makefile
+index c61c119b0..f4a4e6f93 100755
+--- a/extern/jansson/Makefile
++++ b/extern/jansson/Makefile
+@@ -61,14 +61,14 @@ jansson-2.9/configure:
+ all: jansson-2.9/configure
+ 	cd ./jansson-2.9; \
+ 	./configure --prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM) --exec-prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ 
+ _installall: install
+ 	
+ install: jansson-2.9/configure
+ 	cd jansson-2.9; \
+ 	./configure --prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM) --exec-prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ _cleanall: clean
+ 	
+ clean:
+diff --git a/extern/log4cplus/Makefile b/extern/log4cplus/Makefile
+index d413bb86a..f91557348 100755
+--- a/extern/log4cplus/Makefile
++++ b/extern/log4cplus/Makefile
+@@ -71,13 +71,13 @@ log4cplus-2.0.0-rc1/configure:
+ all: log4cplus-2.0.0-rc1/configure
+ 	cd ./log4cplus-2.0.0-rc1; \
+ 	./configure --prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM) --exec-prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ _installall: install
+ 
+ install: log4cplus-2.0.0-rc1/configure
+ 	cd ./log4cplus-2.0.0-rc1; \
+ 	./configure --prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM) --exec-prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ _cleanall: clean
+ 
+ clean:
+diff --git a/extern/mimetic/Makefile b/extern/mimetic/Makefile
+index 802fe0497..010059d0f 100755
+--- a/extern/mimetic/Makefile
++++ b/extern/mimetic/Makefile
+@@ -66,17 +66,17 @@ mimetic-0.9.8/configure:
+ 	
+ all: mimetic-0.9.8/configure
+ 	cd mimetic-0.9.8; \
+-	make distclean; \
++	$(MAKE) distclean; \
+         ./configure --prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM) --exec-prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-        make; make install
++        $(MAKE); $(MAKE) install
+ 
+ _installall: install
+ 
+ install: mimetic-0.9.8/configure
+ 	cd mimetic-0.9.8; \
+-	make distclean; \
++	$(MAKE) distclean; \
+ 	  ./configure --prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM) --exec-prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ 
+ _cleanall: clean
+ 
+diff --git a/extern/nlohmannjson/Makefile b/extern/nlohmannjson/Makefile
+index fcf76b4e8..928a119c9 100755
+--- a/extern/nlohmannjson/Makefile
++++ b/extern/nlohmannjson/Makefile
+@@ -60,7 +60,7 @@ json-3.5.0/Makefile:
+ 
+ all: json-3.5.0/Makefile
+ 	cd ./json-3.5.0; \
+-	make amalgamate; \
++	$(MAKE) amalgamate; \
+ 	mkdir -p ../$(XDAQ_PLATFORM)/include/nlohmann; \
+ 	cp single_include/nlohmann/json.hpp ../$(XDAQ_PLATFORM)/include/nlohmann
+ 
+diff --git a/extern/pstreams/Makefile b/extern/pstreams/Makefile
+index ef064ad24..2514ba0dd 100755
+--- a/extern/pstreams/Makefile
++++ b/extern/pstreams/Makefile
+@@ -60,7 +60,7 @@ pstreams-1.0.0/Makefile:
+ 
+ all: pstreams-1.0.0/Makefile
+ 	cd ./pstreams-1.0.0; \
+-	make; \
++	$(MAKE); \
+ 	mkdir -p ../$(XDAQ_PLATFORM)/include; \
+ 	cp pstream.h ../$(XDAQ_PLATFORM)/include
+ 
+diff --git a/extern/slp/Makefile b/extern/slp/Makefile
+index bff331719..67707acdb 100755
+--- a/extern/slp/Makefile
++++ b/extern/slp/Makefile
+@@ -67,7 +67,7 @@ openslp-2.0.0/configure:
+ all: openslp-2.0.0/configure
+ 	cd ./openslp-2.0.0; \
+ 	./configure --with-pic --prefix $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make;  make install
++	$(MAKE);  $(MAKE) install
+ 	mkdir -p $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM)/etc
+ 	cp slp.conf $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM)/etc
+ 
+@@ -76,7 +76,7 @@ _installall: install
+ install: openslp-2.0.0/configure
+ 	cd openslp-2.0.0; \
+ 	./configure --with-pic --prefix $(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ 	mkdir -p $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM)/etc
+ 	cp slp.conf $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM)/etc
+ 
+diff --git a/extern/sqlite/Makefile b/extern/sqlite/Makefile
+index 9e4efda0b..83be5fc23 100644
+--- a/extern/sqlite/Makefile
++++ b/extern/sqlite/Makefile
+@@ -71,14 +71,14 @@ sqlite-autoconf-3150200/configure:
+ all: sqlite-autoconf-3150200/configure
+ 	cd ./sqlite-autoconf-3150200; \
+ 	./configure --enable-threadsafe --enable-cross-thread-connection --prefix $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ 
+ _installall: install
+ 
+ install:
+ 	cd ./sqlite-autoconf-3150200; \
+ 	./configure --enable-threadsafe --enable-cross-thread-connection --prefix $(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make; make install
++	$(MAKE); $(MAKE) install
+ 
+ _cleanall: clean
+ clean:
+diff --git a/extern/xalan/Makefile b/extern/xalan/Makefile
+index 336e177e4..08b83163a 100755
+--- a/extern/xalan/Makefile
++++ b/extern/xalan/Makefile
+@@ -89,7 +89,7 @@ all: xalan-c-1.11/c/runConfigure
+ 	cd ./xalan-c-1.11/c; \
+  	chmod +x ./runConfigure; \
+  	./runConfigure -p $(XDAQ_OS) -c $(CC) -x $(CXX) -b $(BITS) -P $(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+- 	make PROJECT_NAME=xalan-c; make PROJECT_NAME=xalan-c install
++ 	$(MAKE) PROJECT_NAME=xalan-c; $(MAKE) PROJECT_NAME=xalan-c install
+ 
+ _installall: install
+ 
+@@ -97,7 +97,7 @@ install:
+ 	cd xalan-c-1.11/c; \
+ 	chmod +x ./runConfigure; \
+ 	./runConfigure -p $(XDAQ_OS) -c $(CC) -x $(CXX) -b $(BITS) -P $(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make PROJECT_NAME=xalan-c; make PROJECT_NAME=xalan-c install
++	$(MAKE) PROJECT_NAME=xalan-c; $(MAKE) PROJECT_NAME=xalan-c install
+ 
+ _cleanall: clean
+ 
+@@ -109,6 +109,6 @@ samples:
+ 	cd ./xalan-c-1.11/c/samples; \
+         chmod +x ./runConfigure; \
+         ./runConfigure -p $(XDAQ_OS) -c $(CC) -x $(CXX) -b $(BITS) -P $(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-        make PROJECT_NAME=xalan-c; make PROJECT_NAME=xalan-c install
++        $(MAKE) PROJECT_NAME=xalan-c; $(MAKE) PROJECT_NAME=xalan-c install
+ 
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/mfExternRPM.rules
+diff --git a/extern/xerces/Makefile b/extern/xerces/Makefile
+index 6d694e9fd..69720e879 100755
+--- a/extern/xerces/Makefile
++++ b/extern/xerces/Makefile
+@@ -88,15 +88,15 @@ all: xerces-c-3.2.0/configure
+ 	echo "--->"$(BITS) 
+ 	cd xerces-c-3.2.0; \
+ 	./configure --disable-rpath --prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM) --exec-prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make; \
+-	make install
++	$(MAKE); \
++	$(MAKE) install
+ 
+ _installall: install
+ 
+ install: xerces-c-3.2.0/configure 
+ 	cd xerces-c-3.2.0; \
+ 	./configure --disable-rpath --prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM) --exec-prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make install
++	$(MAKE) install
+ 
+ _cleanall:clean
+ clean:
+diff --git a/extern/xqilla/Makefile b/extern/xqilla/Makefile
+index 1f12dd2df..35cd02d67 100755
+--- a/extern/xqilla/Makefile
++++ b/extern/xqilla/Makefile
+@@ -82,16 +82,16 @@ XQilla-2.3.0/configure:
+ all: XQilla-2.3.0/configure 
+ 	cd XQilla-2.3.0; \
+ 	./configure --with-xerces=$(BUILD_HOME)/extern/xerces/xerces-c-3.1.1 --prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM) --exec-prefix=$(BUILD_HOME)/$(Package)/$(XDAQ_PLATFORM); \
+-	make; \
+-	make install
++	$(MAKE); \
++	$(MAKE) install
+ 
+ _installall: install
+ install: XQilla-2.3.0/configure
+ 	cd XQilla-2.3.0; \
+ 	./configure --with-xerces=$(BUILD_HOME)/extern/xerces/xerces-c-3.1.1 --prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM) --exec-prefix=$(INSTALL_PREFIX)/$(XDAQ_PLATFORM); \
+-	make clean; \
+-	make; \
+-	make install
++	$(MAKE) clean; \
++	$(MAKE); \
++	$(MAKE) install
+ 
+ _cleanall:clean
+ clean:

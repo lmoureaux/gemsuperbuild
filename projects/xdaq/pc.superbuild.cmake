@@ -31,18 +31,19 @@ ExternalProject_Add(core.${EP_NAME}
   INSTALL_DIR "${EP_INSTALL_DIR}"
 
   DOWNLOAD_DIR "${SUPERBUILD_CACHE_DIR}"
-  URL https://gitlab.cern.ch/cmsos/core/-/archive/release_14_10_0_0/core-release_14_10_0_0.tar.bz2
-  URL_HASH SHA256=2cb223ded3db28f67443f38dc7b40a432667643fc3f96983402b7f4c3cdafcfa
+  URL https://gitlab.cern.ch/cmsos/core/-/archive/1f55790f611805c3a1e63316669514ab12b737f5/core-1f55790f611805c3a1e63316669514ab12b737f5.tar.bz2
+  URL_HASH SHA256=15a054a25a07ca9aeea8f254c7e2c9366191cf807f4ab1118b83fc0f4f6ceedf
 
-  PATCH_COMMAND patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/xalan-makefile.patch"
-  COMMAND       patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/xdaq-core-cpp11.patch"
-  COMMAND       patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/xdaq-core-asyncresolv.patch"
+  PATCH_COMMAND patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/00-xalan.patch"
+  COMMAND       patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/01-boost_thread.patch"
+  COMMAND       patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/02-asyncresolv.patch"
+  COMMAND       patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/03-parallel_build.patch"
 
   CONFIGURE_COMMAND ""
   BUILD_IN_SOURCE TRUE
-  BUILD_COMMAND make
+  BUILD_COMMAND $(MAKE)
     ${_xdaq_core_options}
-  INSTALL_COMMAND make install
+  INSTALL_COMMAND $(MAKE) install
     ${_xdaq_core_options}
 )
 
@@ -60,11 +61,10 @@ ExternalProject_Add(worksuite.${EP_NAME}
   INSTALL_DIR "${EP_INSTALL_DIR}"
 
   DOWNLOAD_DIR "${SUPERBUILD_CACHE_DIR}"
-  URL https://gitlab.cern.ch/cmsos/worksuite/-/archive/release_14_9_0_0/worksuite-release_14_9_0_0.tar.bz2
-  URL_HASH SHA256=2a40740227e414f45be0c36c70ce5d590756e2e9156327730ad74bfb6094a0de
+  URL https://gitlab.cern.ch/cmsos/worksuite/-/archive/1b498ec569aba656054aa09516db73d2652d70a4/worksuite-1b498ec569aba656054aa09516db73d2652d70a4.tar.bz2
+  URL_HASH SHA256=658564ed2f260ed52dc82f5df1cdddbcc65507218c27c30152e452981797145a
 
-  PATCH_COMMAND patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/oracle-makefile.patch"
-  COMMAND       patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/xdaq-worksuite-cpp11.patch"
+  PATCH_COMMAND patch -p1 -i "${CMAKE_CURRENT_LIST_DIR}/00-oracle.patch"
   COMMAND       sed "s/BUILD_HOME/XDAQ_ROOT/g" "${EP_PREFIX}/src/core.xdaq.pc/mfDefs.core" > "<SOURCE_DIR>/mfDefs.core"
   COMMAND       echo "include <SOURCE_DIR>/mfDefs.core" >> "<SOURCE_DIR>/mfDefs.worksuite"
 

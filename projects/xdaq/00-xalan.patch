@@ -1,6 +1,8 @@
+diff --git a/extern/xalan/Makefile b/extern/xalan/Makefile
+index ef376e559..336e177e4 100755
 --- a/extern/xalan/Makefile
 +++ b/extern/xalan/Makefile
-@@ -87,7 +87,7 @@
+@@ -83,7 +83,7 @@ xalan-c-1.11/c/runConfigure:
  	-rm -rf $(XDAQ_PLATFORM)
  	-rm -rf xalan-c-1.11 
  	tar -zxf xalan_c-1.11-src.tar.gz

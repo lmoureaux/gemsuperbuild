@@ -1,0 +1,30 @@
+diff --git a/extern/asyncresolv/Makefile b/extern/asyncresolv/Makefile
+index b5013264e..53df48e5e 100755
+--- a/extern/asyncresolv/Makefile
++++ b/extern/asyncresolv/Makefile
+@@ -57,7 +57,7 @@ export CXX
+ LD:=$(LDD)
+ export LD
+ 
+-PATCH=patch -p0 < asyncresolv-0.0.4.patch; patch -p0 < sf1672525.patch; patch -p0 < cmsos550.patch; patch -p0 < cmsos698.patch
++PATCH=patch -p0 < asyncresolv-0.0.4.patch; patch -p0 < sf1672525.patch; patch -p0 < cmsos550.patch; patch -p0 < cmsos698.patch; patch -p0 < disable-werror.patch
+ 
+ build: _buildall
+ 
+diff --git a/extern/asyncresolv/disable-werror.patch b/extern/asyncresolv/disable-werror.patch
+new file mode 100644
+index 000000000..d8f767080
+--- /dev/null
++++ b/extern/asyncresolv/disable-werror.patch
+@@ -0,0 +1,11 @@
++--- asyncresolv-0.0.4/configure.in
+++++ asyncresolv-0.0.4/configure.in
++@@ -70,7 +70,7 @@
++ # Compiling options
++ CXXFLAGS="${CXXFLAGS} -pipe"
++ # Warning options 
++-CXXFLAGS="${CXXFLAGS} -Werror -Wall -Winline"
+++CXXFLAGS="${CXXFLAGS} -Wall -Winline"
++ # 
++ CXXFLAGS="${CXXFLAGS} -D_REENTRANT -D_THREAD_SAFE"
++ 

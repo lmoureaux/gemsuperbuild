@@ -1,0 +1,39 @@
+diff --git a/benchmark/justio/Makefile b/benchmark/justio/Makefile
+index 86f3ecf36..95fc8ae9e 100755
+--- a/benchmark/justio/Makefile
++++ b/benchmark/justio/Makefile
+@@ -82,7 +82,7 @@ StaticLibrary=
+ 
+ TestLibraries=
+ TestExecutables=
+-#DependentLibraries += boost_thread-mt
++#DependentLibraries += boost_thread
+ 
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/Makefile.rules
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/mfRPM.rules
+diff --git a/benchmark/mstreamio2g/Makefile b/benchmark/mstreamio2g/Makefile
+index 425501f57..df46ee669 100755
+--- a/benchmark/mstreamio2g/Makefile
++++ b/benchmark/mstreamio2g/Makefile
+@@ -82,7 +82,7 @@ StaticLibrary=
+ 
+ TestLibraries=
+ TestExecutables=
+-DependentLibraries += boost_thread-mt
++DependentLibraries += boost_thread
+ 
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/Makefile.rules
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/mfRPM.rules
+diff --git a/examples/eventing/Makefile b/examples/eventing/Makefile
+index 8bb65a1e1..b6c58e979 100755
+--- a/examples/eventing/Makefile
++++ b/examples/eventing/Makefile
+@@ -87,7 +87,7 @@ StaticLibrary=
+ 
+ TestLibraries=
+ TestExecutables=
+-DependentLibraries += boost_thread-mt
++DependentLibraries += boost_thread
+ 
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/Makefile.rules
+ include $(XDAQ_ROOT)/$(BUILD_SUPPORT)/mfRPM.rules

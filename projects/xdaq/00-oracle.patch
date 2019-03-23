@@ -1,6 +1,8 @@
+diff --git a/extern/oracle/Makefile b/extern/oracle/Makefile
+index 29fdb0cf8..7fc368a71 100755
 --- a/extern/oracle/Makefile
 +++ b/extern/oracle/Makefile
-@@ -52,45 +52,21 @@
+@@ -52,44 +52,29 @@ export LD
  #Requires tcsh because the .setup is a csh script
  #export SHELL=/bin/tcsh
  
@@ -48,11 +50,30 @@
 -endif
 -endif
 -endif
--endif
++
++# Check for the C++11 ABI version (0 means new ABI; different than 0 means old ABI)
++_abi_version := $(shell echo "\#include <string>" | g++ -x c++ -dM -E - | grep -q "define _GLIBCXX_USE_CXX11_ABI 1"; echo $$?)
++
++ifeq ($(_abi_version),0)
++LIB_SOURCE_DIR=libs_12.1.0.2
++else
++LIB_SOURCE_DIR=instantclient_12_1
+ endif
  
  _all: all
+@@ -106,23 +91,23 @@ all:
+ 	mkdir -p $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/bin
+ 	install -m 655 instantclient_12_1/sdk/include/* $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/include;
+ 	install -m 755 instantclient_12_1/sqlplus $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/bin;
+-	install -m 655 libs_12.1.0.2/lib* $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib;
+-	install -m 655 libs_12.1.0.2/libocci.so.12.1 $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib/libocci.so;
+-	install -m 655 libs_12.1.0.2/libclntsh.so.12.1 $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib/libclntsh.so
++	install -m 655 ${LIB_SOURCE_DIR}/lib* $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib;
++	install -m 655 ${LIB_SOURCE_DIR}/libocci.so.12.1 $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib/libocci.so;
++	install -m 655 ${LIB_SOURCE_DIR}/libclntsh.so.12.1 $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib/libclntsh.so
  
-@@ -115,14 +91,14 @@
+ _installall: install
+ install:
  	-unzip -qo $(FILE1);
  	-unzip -qo $(FILE2);
  	-unzip -qo $(FILE3);
@@ -60,18 +81,18 @@
 -	-mkdir -p $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/lib
 -	-mkdir -p $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/bin
 -	install -m 655 instantclient_12_1/sdk/include/* $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/include;
--	install -m 655 instantclient_12_1/lib* $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/lib;
--	install -m 655 instantclient_12_1/libocci.so.12.1 $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/lib/libocci.so;
--	install -m 655 instantclient_12_1/libclntsh.so.12.1 $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/lib/libclntsh.so;
--	install -m 755 instantclient_12_1/sqlplus $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/bin
+-	install -m 755 instantclient_12_1/sqlplus $(XDAQ_ROOT)/$(XDAQ_PLATFORM)/bin;
+-	install -m 655 libs_12.1.0.2/lib* $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib;
+-	install -m 655 libs_12.1.0.2/libocci.so.12.1 $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib/libocci.so;
+-	install -m 655 libs_12.1.0.2/libclntsh.so.12.1 $(BUILD_HOME)/extern/oracle/$(XDAQ_PLATFORM)/lib/libclntsh.so
 +	-mkdir -p $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/include
 +	-mkdir -p $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib
 +	-mkdir -p $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/bin
 +	install -m 655 instantclient_12_1/sdk/include/* $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/include;
-+	install -m 655 instantclient_12_1/lib* $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib;
-+	install -m 655 instantclient_12_1/libocci.so.12.1 $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib/libocci.so;
-+	install -m 655 instantclient_12_1/libclntsh.so.12.1 $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib/libclntsh.so;
-+	install -m 755 instantclient_12_1/sqlplus $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/bin
++	install -m 755 instantclient_12_1/sqlplus $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/bin;
++	install -m 655 ${LIB_SOURCE_DIR}/lib* $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib;
++	install -m 655 ${LIB_SOURCE_DIR}/libocci.so.12.1 $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib/libocci.so;
++	install -m 655 ${LIB_SOURCE_DIR}/libclntsh.so.12.1 $(INSTALL_PREFIX)/$(XDAQ_PLATFORM)/lib/libclntsh.so;
  
  #clean= _cleanall
  #_cleanall:
